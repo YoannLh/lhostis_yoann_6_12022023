@@ -1,5 +1,14 @@
-import React from 'react'
+import styled from 'styled-components'
+
+const Container = styled.main`
+  display: flex;
+  padding: 30px 60px;
+
+  @media (max-width: 450px) {
+    padding: 30px 20px;
+  }
+`
 
 export const Photographer = () => {
-  return <div>photographer</div>
+  return <Container>photographer</Container>
 }
