@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 import data from '../data/data.json'
 import { colors } from '../utils/colors'
@@ -18,10 +19,11 @@ const Container = styled.main`
   }
 `
 
-const Card = styled.div`
+const Card = styled(Link)`
   display: flex;
   flex-direction: column;
   width: 30%;
+  text-decoration: none;
 
   @media (max-width: 450px) {
     width: 100%;
@@ -53,6 +55,7 @@ const Quote = styled.p`
   text-align: center;
   font-size: 0.8em;
   margin: 0;
+  color: ${colors.black};
 `
 
 const Price = styled.p`
@@ -67,7 +70,7 @@ export const Home = () => {
   return (
     <Container>
       {homeData.map((photographer) => (
-        <Card key={photographer.id}>
+        <Card key={photographer.id} to={`/photographer/${photographer.id}`}>
           <Photo
             src={`./src/assets/photographers/${photographer.portrait}`}
             alt="dfsf"

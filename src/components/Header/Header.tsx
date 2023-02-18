@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 
 import logo from '../../assets/logo.png'
 import { colors } from '../../utils/colors'
@@ -13,6 +13,8 @@ const Container = styled.header`
     padding: 30px 20px;
   }
 `
+
+const LinkLogo = styled(Link)``
 
 const Logo = styled.img`
   height: 35px;
@@ -28,7 +30,9 @@ export const Header = () => {
   const location = useLocation()
   return (
     <Container>
-      <Logo src={logo} alt="logo_fisheye" />
+      <LinkLogo to="/">
+        <Logo src={logo} alt="logo_fisheye" />
+      </LinkLogo>
       {location.pathname === '/photographer' ? null : (
         <Title>Nos photographes</Title>
       )}
