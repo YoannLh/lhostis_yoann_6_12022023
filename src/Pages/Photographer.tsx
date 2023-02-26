@@ -5,9 +5,11 @@ import { useParams } from 'react-router-dom'
 import data from '../data/data.json'
 import PhotographerProps from '../interfaces/PhotographerProps'
 import { colors } from '../utils/colors'
+import { Dropdown } from '../components/Dropdown/Dropdown'
 
 const Container = styled.main`
   display: flex;
+  flex-direction: column;
   padding: 30px 60px;
 
   @media (max-width: 450px) {
@@ -17,7 +19,6 @@ const Container = styled.main`
 
 const HeaderPhotographer = styled.section`
   display: flex;
-  width: 100%;
   height: 170px;
   justify-content: space-between;
   background: ${colors.tertiaryBackground};
@@ -85,6 +86,21 @@ const Photo = styled.img`
   }
 `
 
+const WrapperSortAndDropdown = styled.div`
+  position: relative;
+  top: 20px;
+  display: flex;
+  width: 17%;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    width: 100%;
+  }
+`
+
 export const Photographer = () => {
   const { id } = useParams()
   const [infos, setInfos] = useState<PhotographerProps>()
@@ -116,6 +132,10 @@ export const Photographer = () => {
           />
         </HeaderPhotographer>
       ) : null}
+      <WrapperSortAndDropdown>
+        <p>Trier par</p>
+        <Dropdown />
+      </WrapperSortAndDropdown>
     </Container>
   )
 }
