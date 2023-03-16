@@ -6,6 +6,9 @@ import data from '../data/data.json'
 import PhotographerProps from '../interfaces/PhotographerProps'
 import { colors } from '../utils/colors'
 import { Dropdown } from '../components/Dropdown/Dropdown'
+import { MediaFactory } from '../domains/Factory/MediaFactory'
+import MediaProps from '../interfaces/MediaProps'
+import { Media } from '../domains/Media/Media'
 
 const Container = styled.main`
   display: flex;
@@ -101,10 +104,22 @@ const WrapperSortAndDropdown = styled.div`
   }
 `
 
+const WrapperMedias = styled.section`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 40px;
+
+  @media (max-width: 900px) {
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+`
+
 export const Photographer = () => {
   const { id } = useParams()
   const [infos, setInfos] = useState<PhotographerProps>()
-  const [medias, setMedias] = useState()
+  const [medias, setMedias] = useState<MediaProps[]>()
   useEffect(() => {
     if (data === undefined) return
     for (const photographer of data.photographers) {
@@ -114,6 +129,16 @@ export const Photographer = () => {
       }
     }
   }, [data])
+  useEffect(() => {
+    if (id === undefined) return
+    let temp = []
+    for (const media of data.medias) {
+      if (+id === media.photographerId) {
+        temp.push(media)
+      }
+    }
+    setMedias(temp)
+  }, [id])
   return (
     <Container>
       {infos ? (
@@ -136,6 +161,13 @@ export const Photographer = () => {
         <p>Trier par</p>
         <Dropdown />
       </WrapperSortAndDropdown>
+      <WrapperMedias>
+        {medias
+          ? medias.map((media) => {
+              return <MediaFactory key={media.id} media={media} />
+            })
+          : null}
+      </WrapperMedias>
     </Container>
   )
 }
