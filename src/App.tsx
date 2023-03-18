@@ -8,10 +8,10 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Header />
         <Routes>
-          <Route path={'/'} element={<Home />} />
-          <Route path={'/photographer/:id'} element={<Photographer />} />
+          <Route path="/" element={<Home />} />
+          <Route path="photographer/:id" element={<Photographer />} />
+          <Route path="*" element={<p>Path not resolved</p>} />
         </Routes>
       </BrowserRouter>
     </div>

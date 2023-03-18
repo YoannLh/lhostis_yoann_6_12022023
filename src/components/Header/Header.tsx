@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-import { useLocation, Link } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 
 import logo from '../../assets/logo.png'
 import { colors } from '../../utils/colors'
+import { useEffect, useState } from 'react'
 
 const Container = styled.header`
   display: flex;
@@ -27,15 +28,13 @@ const Title = styled.h1`
 `
 
 export const Header = () => {
-  const location = useLocation()
+  let { id } = useParams()
   return (
     <Container>
       <LinkLogo to="/">
         <Logo src={logo} alt="logo_fisheye" />
       </LinkLogo>
-      {location.pathname === '/photographer' ? null : (
-        <Title>Nos photographes</Title>
-      )}
+      {id ? null : <Title>Nos photographes</Title>}
     </Container>
   )
 }

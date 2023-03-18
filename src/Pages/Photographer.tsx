@@ -9,6 +9,7 @@ import { Dropdown } from '../components/Dropdown/Dropdown'
 import { MediaFactory } from '../domains/Factory/MediaFactory'
 import MediaProps from '../interfaces/MediaProps'
 import { Media } from '../domains/Media/Media'
+import { Header } from '../components/Header/Header'
 
 const Container = styled.main`
   display: flex;
@@ -140,34 +141,37 @@ export const Photographer = () => {
     setMedias(temp)
   }, [id])
   return (
-    <Container>
-      {infos ? (
-        <HeaderPhotographer>
-          <Infos>
-            <Name>{infos.name}</Name>
-            <Town>
-              {infos.city}, {infos.country}
-            </Town>
-            <Quote>{infos.tagline}</Quote>
-          </Infos>
-          <Button>Contactez-moi</Button>
-          <Photo
-            src={`../src/assets/photographers/${infos.portrait}`}
-            alt="sfdfsdd"
-          />
-        </HeaderPhotographer>
-      ) : null}
-      <WrapperSortAndDropdown>
-        <p>Trier par</p>
-        <Dropdown />
-      </WrapperSortAndDropdown>
-      <WrapperMedias>
-        {medias
-          ? medias.map((media) => {
-              return <MediaFactory key={media.id} media={media} />
-            })
-          : null}
-      </WrapperMedias>
-    </Container>
+    <>
+      <Header />
+      <Container>
+        {infos ? (
+          <HeaderPhotographer>
+            <Infos>
+              <Name>{infos.name}</Name>
+              <Town>
+                {infos.city}, {infos.country}
+              </Town>
+              <Quote>{infos.tagline}</Quote>
+            </Infos>
+            <Button>Contactez-moi</Button>
+            <Photo
+              src={`../src/assets/photographers/${infos.portrait}`}
+              alt="sfdfsdd"
+            />
+          </HeaderPhotographer>
+        ) : null}
+        <WrapperSortAndDropdown>
+          <p>Trier par</p>
+          <Dropdown />
+        </WrapperSortAndDropdown>
+        <WrapperMedias>
+          {medias
+            ? medias.map((media) => {
+                return <MediaFactory key={media.id} media={media} />
+              })
+            : null}
+        </WrapperMedias>
+      </Container>
+    </>
   )
 }

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 
 import data from '../data/data.json'
 import { colors } from '../utils/colors'
+import { Header } from '../components/Header/Header'
 
 const Container = styled.main`
   display: flex;
@@ -68,21 +69,24 @@ const Price = styled.p`
 export const Home = () => {
   const [homeData, setHomeData] = useState(data.photographers)
   return (
-    <Container>
-      {homeData.map((photographer) => (
-        <Card key={photographer.id} to={`/photographer/${photographer.id}`}>
-          <Photo
-            src={`./src/assets/photographers/${photographer.portrait}`}
-            alt="dfsf"
-          />
-          <Name>{photographer.name}</Name>
-          <Town>
-            {photographer.city}, {photographer.country}
-          </Town>
-          <Quote>{photographer.tagline}</Quote>
-          <Price>{photographer.price}€/jour</Price>
-        </Card>
-      ))}
-    </Container>
+    <>
+      <Header />
+      <Container>
+        {homeData.map((photographer) => (
+          <Card key={photographer.id} to={`photographer/${photographer.id}`}>
+            <Photo
+              src={`./src/assets/photographers/${photographer.portrait}`}
+              alt="dfsf"
+            />
+            <Name>{photographer.name}</Name>
+            <Town>
+              {photographer.city}, {photographer.country}
+            </Town>
+            <Quote>{photographer.tagline}</Quote>
+            <Price>{photographer.price}€/jour</Price>
+          </Card>
+        ))}
+      </Container>
+    </>
   )
 }
