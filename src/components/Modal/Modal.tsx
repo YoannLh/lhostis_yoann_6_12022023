@@ -150,17 +150,13 @@ export const Modal = ({
       <WrapperMediaAndControls>
         <WrapperLeftArrow>
           {actualIndex === 0 ? null : (
-            <LeftArrow
-              src={redArrow}
-              alt=""
-              onClick={() => displayPreviousMedia()}
-            />
+            <LeftArrow src={redArrow} onClick={() => displayPreviousMedia()} />
           )}
         </WrapperLeftArrow>
         {actualMedia && actualMedia.image ? (
           <Photo
             src={`../src/assets/medias/${actualMedia.photographerId}/${actualMedia.image}`}
-            alt=""
+            alt={actualMedia.title}
           />
         ) : null}
         {actualMedia && actualMedia.video ? (
@@ -169,14 +165,10 @@ export const Modal = ({
             controls
           />
         ) : null}
-        <Cross src={cross} alt="" onClick={() => closeModal()} />
+        <Cross src={cross} onClick={() => closeModal()} />
         <WrapperRighttArrow>
           {medias && actualIndex === +medias.length - 1 ? null : (
-            <RighttArrow
-              src={redArrow}
-              alt=""
-              onClick={() => displayNextMedia()}
-            />
+            <RighttArrow src={redArrow} onClick={() => displayNextMedia()} />
           )}
         </WrapperRighttArrow>
       </WrapperMediaAndControls>

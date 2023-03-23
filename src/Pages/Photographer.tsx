@@ -11,6 +11,7 @@ import MediaProps from '../interfaces/MediaProps'
 import { Media } from '../domains/Media/Media'
 import { Header } from '../components/Header/Header'
 import { Modal } from '../components/Modal/Modal'
+import blackHeart from '../assets/blackHeart.png'
 
 const Container = styled.main`
   display: flex;
@@ -118,11 +119,42 @@ const WrapperMedias = styled.section`
   }
 `
 
+const WrapperTotalLikesAndPrice = styled.div`
+  position: fixed;
+  bottom: 0;
+  right: 25px;
+  display: flex;
+  width: 25%;
+  height: 50px;
+  justify-content: space-around;
+  align-items: center;
+  background: ${colors.secondaryBackground};
+  color: ${colors.black};
+  border-radius: 5px 5px 0 0;
+
+  @media (max-width: 900px) {
+    width: 90%;
+  }
+`
+
+const TotalLikes = styled.p`
+  margin: auto;
+`
+
+const Heart = styled.img`
+  height: 12px;
+`
+
+const Price = styled.p`
+  margin: auto;
+`
+
 export const Photographer = () => {
   const { id } = useParams()
   const [infos, setInfos] = useState<PhotographerProps>()
   const [medias, setMedias] = useState<MediaProps[]>()
   const [clickedMediaId, setClickedMediaId] = useState<number>()
+  const [totalLikes, setTotalLikes] = useState(0)
   useEffect(() => {
     if (data === undefined) return
     for (const photographer of data.photographers) {
@@ -134,13 +166,16 @@ export const Photographer = () => {
   }, [data])
   useEffect(() => {
     if (id === undefined) return
-    let temp = []
+    let tempMedias = []
+    let tempLikes = 0
     for (const media of data.medias) {
       if (+id === media.photographerId) {
-        temp.push(media)
+        tempMedias.push(media)
+        tempLikes += media.likes
       }
     }
-    setMedias(temp)
+    setMedias(tempMedias)
+    setTotalLikes(tempLikes)
   }, [id])
 
   function getClickedMediaId(clickedMediaId: number) {
@@ -149,6 +184,10 @@ export const Photographer = () => {
 
   function deleteClickedMediaIdWhenCloseModal() {
     setClickedMediaId(undefined)
+  }
+
+  function clickAddLike() {
+    setTotalLikes(totalLikes + 1)
   }
 
   return (
@@ -183,6 +222,7 @@ export const Photographer = () => {
                     key={media.id}
                     media={media}
                     getClickedMediaId={getClickedMediaId}
+                    clickAddLike={clickAddLike}
                   />
                 )
               })
@@ -195,6 +235,12 @@ export const Photographer = () => {
             deleteClickedMediaIdWhenCloseModal
           }
         />
+        <WrapperTotalLikesAndPrice>
+          <TotalLikes>
+            {totalLikes} <Heart src={blackHeart} />
+          </TotalLikes>
+          <Price>{infos?.price} € / jour</Price>
+        </WrapperTotalLikesAndPrice>
       </Container>
     </>
   )

@@ -8,4 +8,5 @@ export default interface MediaProps {
   date: string
   price: number
   getClickedMediaId?: (id: number) => void
+  clickAddLike?: () => void
 }

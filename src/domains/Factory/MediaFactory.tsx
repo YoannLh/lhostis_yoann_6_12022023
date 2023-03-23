@@ -4,6 +4,7 @@ import MediaFactoryProps from '../../interfaces/MediaFactoryProps'
 export const MediaFactory = ({
   media,
   getClickedMediaId,
+  clickAddLike,
 }: MediaFactoryProps) => {
   if (media.image) {
     return (
@@ -16,6 +17,7 @@ export const MediaFactory = ({
         date={media.date}
         price={media.price}
         getClickedMediaId={getClickedMediaId}
+        clickAddLike={clickAddLike}
       />
     )
   }
@@ -30,6 +32,7 @@ export const MediaFactory = ({
         date={media.date}
         price={media.price}
         getClickedMediaId={getClickedMediaId}
+        clickAddLike={clickAddLike}
       />
     )
   } else {
