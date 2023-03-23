@@ -10,6 +10,9 @@ const Container = styled.div`
   flex-direction: column;
   width: 30%;
   margin-bottom: 40px;
+  &:hover {
+    cursor: pointer;
+  }
 
   @media (max-width: 900px) {
     width: 100%;
@@ -54,24 +57,31 @@ export const Media = ({
   likes,
   date,
   price,
+  getClickedMediaId,
 }: MediaProps) => {
   return (
-    <Container>
-      {image ? (
-        <StyledImg
-          src={`../src/assets/medias/${photographerId}/${image}`}
-          alt={title}
-        />
-      ) : (
-        <StyledVideo src={`../src/assets/medias/${photographerId}/${video}`} />
-      )}
-      <WrapperTitleAndLikes>
-        <p>{title}</p>
-        <WrapperLikesAndHeart>
-          <p>{likes}</p>
-          <Heart src={heart} />
-        </WrapperLikesAndHeart>
-      </WrapperTitleAndLikes>
-    </Container>
+    <>
+      {getClickedMediaId ? (
+        <Container onClick={() => getClickedMediaId(id)}>
+          {image ? (
+            <StyledImg
+              src={`../src/assets/medias/${photographerId}/${image}`}
+              alt={title}
+            />
+          ) : (
+            <StyledVideo
+              src={`../src/assets/medias/${photographerId}/${video}`}
+            />
+          )}
+          <WrapperTitleAndLikes>
+            <p>{title}</p>
+            <WrapperLikesAndHeart>
+              <p>{likes}</p>
+              <Heart src={heart} />
+            </WrapperLikesAndHeart>
+          </WrapperTitleAndLikes>
+        </Container>
+      ) : null}
+    </>
   )
 }

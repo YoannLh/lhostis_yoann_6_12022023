@@ -2,7 +2,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 import { colors } from '../../utils/colors'
-import arrow from '../../assets/arrow.png'
+import arrow from '../../assets/whiteArrow.png'
 
 const Container = styled.div`
   position: relative;

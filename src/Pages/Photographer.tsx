@@ -10,6 +10,7 @@ import { MediaFactory } from '../domains/Factory/MediaFactory'
 import MediaProps from '../interfaces/MediaProps'
 import { Media } from '../domains/Media/Media'
 import { Header } from '../components/Header/Header'
+import { Modal } from '../components/Modal/Modal'
 
 const Container = styled.main`
   display: flex;
@@ -121,6 +122,7 @@ export const Photographer = () => {
   const { id } = useParams()
   const [infos, setInfos] = useState<PhotographerProps>()
   const [medias, setMedias] = useState<MediaProps[]>()
+  const [clickedMediaId, setClickedMediaId] = useState<number>()
   useEffect(() => {
     if (data === undefined) return
     for (const photographer of data.photographers) {
@@ -140,6 +142,15 @@ export const Photographer = () => {
     }
     setMedias(temp)
   }, [id])
+
+  function getClickedMediaId(clickedMediaId: number) {
+    setClickedMediaId(clickedMediaId)
+  }
+
+  function deleteClickedMediaIdWhenCloseModal() {
+    setClickedMediaId(undefined)
+  }
+
   return (
     <>
       <Header />
@@ -167,10 +178,23 @@ export const Photographer = () => {
         <WrapperMedias>
           {medias
             ? medias.map((media) => {
-                return <MediaFactory key={media.id} media={media} />
+                return (
+                  <MediaFactory
+                    key={media.id}
+                    media={media}
+                    getClickedMediaId={getClickedMediaId}
+                  />
+                )
               })
             : null}
         </WrapperMedias>
+        <Modal
+          clickedMediaId={clickedMediaId}
+          medias={medias}
+          deleteClickedMediaIdWhenCloseModal={
+            deleteClickedMediaIdWhenCloseModal
+          }
+        />
       </Container>
     </>
   )

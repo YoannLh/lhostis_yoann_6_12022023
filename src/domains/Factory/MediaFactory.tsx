@@ -1,7 +1,10 @@
 import { Media } from '../Media/Media'
 import MediaFactoryProps from '../../interfaces/MediaFactoryProps'
 
-export const MediaFactory = ({ media }: MediaFactoryProps) => {
+export const MediaFactory = ({
+  media,
+  getClickedMediaId,
+}: MediaFactoryProps) => {
   if (media.image) {
     return (
       <Media
@@ -12,6 +15,7 @@ export const MediaFactory = ({ media }: MediaFactoryProps) => {
         likes={media.likes}
         date={media.date}
         price={media.price}
+        getClickedMediaId={getClickedMediaId}
       />
     )
   }
@@ -25,6 +29,7 @@ export const MediaFactory = ({ media }: MediaFactoryProps) => {
         likes={media.likes}
         date={media.date}
         price={media.price}
+        getClickedMediaId={getClickedMediaId}
       />
     )
   } else {

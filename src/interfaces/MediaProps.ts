@@ -7,4 +7,5 @@ export default interface MediaProps {
   likes: number
   date: string
   price: number
+  getClickedMediaId?: (id: number) => void
 }
