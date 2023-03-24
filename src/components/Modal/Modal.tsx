@@ -104,6 +104,19 @@ const RighttArrow = styled.img`
   }
 `
 
+const WrapperPhotoVideoAndTitle = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`
+
+const Title = styled.p`
+  position: relative;
+  left: 10%;
+  margin: 0;
+  color: ${colors.primaryText};
+`
+
 export const Modal = ({
   clickedMediaId,
   medias,
@@ -154,16 +167,22 @@ export const Modal = ({
           )}
         </WrapperLeftArrow>
         {actualMedia && actualMedia.image ? (
-          <Photo
-            src={`../src/assets/medias/${actualMedia.photographerId}/${actualMedia.image}`}
-            alt={actualMedia.title}
-          />
+          <WrapperPhotoVideoAndTitle>
+            <Photo
+              src={`../src/assets/medias/${actualMedia.photographerId}/${actualMedia.image}`}
+              alt={actualMedia.title}
+            />
+            <Title>{actualMedia?.title}</Title>
+          </WrapperPhotoVideoAndTitle>
         ) : null}
         {actualMedia && actualMedia.video ? (
-          <Video
-            src={`../src/assets/medias/${actualMedia.photographerId}/${actualMedia.video}`}
-            controls
-          />
+          <WrapperPhotoVideoAndTitle>
+            <Video
+              src={`../src/assets/medias/${actualMedia.photographerId}/${actualMedia.video}`}
+              controls
+            />
+            <Title>{actualMedia?.title}</Title>
+          </WrapperPhotoVideoAndTitle>
         ) : null}
         <Cross src={cross} onClick={() => closeModal()} />
         <WrapperRighttArrow>
