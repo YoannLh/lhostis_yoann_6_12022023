@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { colors } from '../../utils/colors'
 import arrow from '../../assets/whiteArrow.png'
+import DropdownProps from '../../interfaces/DropdownProps'
 
 const Container = styled.div`
   position: relative;
@@ -54,7 +55,7 @@ const Line = styled.div`
   background-color: ${colors.white};
 `
 
-export const Dropdown = () => {
+export const Dropdown = ({ getActualCategoryInDropdown }: DropdownProps) => {
   const categories = ['Popularité', 'Date', 'Titre']
   const [actualCategory, setActualCategory] = useState(0)
   const [isClicked, setIsClicked] = useState(false)
@@ -64,6 +65,7 @@ export const Dropdown = () => {
   }
 
   function handleClickCategory(category: number) {
+    getActualCategoryInDropdown(categories[category])
     setActualCategory(category)
     handleClick()
   }

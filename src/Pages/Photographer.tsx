@@ -169,6 +169,31 @@ export const Photographer = () => {
     setClickedContactMe(!clickedContactMe)
   }
 
+  function getActualCategoryInDropdown(category: string) {
+    if (medias === undefined) return
+    const temp = [...medias]
+    switch (category) {
+      case 'Popularité':
+        temp.sort((a, b) => b.likes - a.likes)
+        setMedias(temp)
+        break
+      case 'Date':
+        temp.sort((a, b) => Date.parse(a.date) - Date.parse(b.date))
+        setMedias(temp)
+        break
+      case 'Titre':
+        temp.sort((a, b) => {
+          if (a.title < b.title) return -1
+          if (a.title > b.title) return 1
+          return 0
+        })
+        setMedias(temp)
+        break
+      default:
+        break
+    }
+  }
+
   function getClickedMediaId(clickedMediaId: number) {
     setClickedMediaId(clickedMediaId)
   }
@@ -206,7 +231,7 @@ export const Photographer = () => {
         ) : null}
         <WrapperSortAndDropdown>
           <p>Trier par</p>
-          <Dropdown />
+          <Dropdown getActualCategoryInDropdown={getActualCategoryInDropdown} />
         </WrapperSortAndDropdown>
         <WrapperMedias>
           {medias

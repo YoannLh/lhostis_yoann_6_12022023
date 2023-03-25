@@ -1,12 +1,12 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import { Header } from './components/Header/Header'
 
-import { Home } from './Pages/Home'
-import { Photographer } from './Pages/Photographer'
+import { Home } from './pages/Home'
+import { Photographer } from './pages/Photographer'
 
 function App() {
   return (
-    <div className="App">
+    <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -14,7 +14,7 @@ function App() {
           <Route path="*" element={<p>Path not resolved</p>} />
         </Routes>
       </BrowserRouter>
-    </div>
+    </>
   )
 }
 
