@@ -8,10 +8,11 @@ import { colors } from '../utils/colors'
 import { Dropdown } from '../components/Dropdown/Dropdown'
 import { MediaFactory } from '../domains/Factory/MediaFactory'
 import MediaProps from '../interfaces/MediaProps'
-import { Media } from '../domains/Media/Media'
 import { Header } from '../components/Header/Header'
-import { Modal } from '../components/Modal/Modal'
+import { ModalMedia } from '../components/Modals/ModalMedia'
 import blackHeart from '../assets/blackHeart.png'
+import { ModalForm } from '../components/Modals/ModalForm'
+import { Button } from '../components/Button/Button'
 
 const Container = styled.main`
   display: flex;
@@ -58,25 +59,6 @@ const Quote = styled.p`
   font-size: 0.8em;
   margin: 0;
   color: ${colors.black};
-`
-
-const Button = styled.div`
-  margin: auto 0;
-  background: ${colors.primaryBackground};
-  padding: 20px;
-  border-radius: 5px;
-  font-weight: bold;
-  color: ${colors.white};
-  cursor: pointer;
-
-  &:hover {
-    background: ${colors.secondaryBackground};
-    color: ${colors.black};
-  }
-
-  @media (max-width: 450px) {
-    display: none;
-  }
 `
 
 const Photo = styled.img`
@@ -153,6 +135,7 @@ export const Photographer = () => {
   const { id } = useParams()
   const [infos, setInfos] = useState<PhotographerProps>()
   const [medias, setMedias] = useState<MediaProps[]>()
+  const [clickedContactMe, setClickedContactMe] = useState(false)
   const [clickedMediaId, setClickedMediaId] = useState<number>()
   const [totalLikes, setTotalLikes] = useState(0)
   useEffect(() => {
@@ -177,6 +160,14 @@ export const Photographer = () => {
     setMedias(tempMedias)
     setTotalLikes(tempLikes)
   }, [id])
+
+  function clickContactMe() {
+    setClickedContactMe(!clickedContactMe)
+  }
+
+  function closeContactMe() {
+    setClickedContactMe(!clickedContactMe)
+  }
 
   function getClickedMediaId(clickedMediaId: number) {
     setClickedMediaId(clickedMediaId)
@@ -203,7 +194,10 @@ export const Photographer = () => {
               </Town>
               <Quote>{infos.tagline}</Quote>
             </Infos>
-            <Button>Contactez-moi</Button>
+            <Button
+              isClicked={() => clickContactMe()}
+              buttonText="Contactez-moi"
+            />
             <Photo
               src={`../src/assets/photographers/${infos.portrait}`}
               alt="sfdfsdd"
@@ -228,12 +222,17 @@ export const Photographer = () => {
               })
             : null}
         </WrapperMedias>
-        <Modal
+        <ModalMedia
           clickedMediaId={clickedMediaId}
           medias={medias}
           deleteClickedMediaIdWhenCloseModal={
             deleteClickedMediaIdWhenCloseModal
           }
+        />
+        <ModalForm
+          clickedContactMe={clickedContactMe}
+          closeContactMe={closeContactMe}
+          name={infos?.name}
         />
         <WrapperTotalLikesAndPrice>
           <TotalLikes>

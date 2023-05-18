@@ -5,7 +5,7 @@ import { colors } from '../../utils/colors'
 import cross from '../../assets/cross.png'
 import redArrow from '../../assets/redArrow.png'
 import MediaProps from '../../interfaces/MediaProps'
-import ModalProps from '../../interfaces/ModalProps'
+import ModalMediaProps from '../../interfaces/ModalMediaProps'
 
 const Container = styled.div<{ visible: boolean }>`
   position: fixed;
@@ -117,11 +117,11 @@ const Title = styled.p`
   color: ${colors.primaryText};
 `
 
-export const Modal = ({
+export const ModalMedia = ({
   clickedMediaId,
   medias,
   deleteClickedMediaIdWhenCloseModal,
-}: ModalProps) => {
+}: ModalMediaProps) => {
   const [visible, setVisible] = useState(false)
   const [actualIndex, setActualIndex] = useState<number>()
   const [actualMedia, setActualMedia] = useState<MediaProps>()
