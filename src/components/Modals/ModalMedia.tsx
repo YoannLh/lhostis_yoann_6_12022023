@@ -125,6 +125,7 @@ export const ModalMedia = ({
   const [visible, setVisible] = useState(false)
   const [actualIndex, setActualIndex] = useState<number>()
   const [actualMedia, setActualMedia] = useState<MediaProps>()
+
   useEffect(() => {
     if (clickedMediaId === undefined) return
     setVisible(true)
@@ -157,6 +158,19 @@ export const ModalMedia = ({
     deleteClickedMediaIdWhenCloseModal()
     window.scrollTo(0, 0)
   }
+
+  useEffect(() => {
+    window.addEventListener('keydown', function listener(e) {
+      if (e.key === 'ArrowLeft') {
+        displayPreviousMedia()
+        window.removeEventListener('keydown', listener)
+      }
+      if (e.key === 'ArrowRight') {
+        displayNextMedia()
+        window.removeEventListener('keydown', listener)
+      }
+    })
+  })
 
   return (
     <Container visible={visible}>
