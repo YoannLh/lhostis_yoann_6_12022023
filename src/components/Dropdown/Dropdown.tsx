@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { colors } from '../../utils/colors'
@@ -59,31 +59,63 @@ export const Dropdown = ({ getActualCategoryInDropdown }: DropdownProps) => {
   const categories = ['Popularité', 'Date', 'Titre']
   const [actualCategory, setActualCategory] = useState(0)
   const [isClicked, setIsClicked] = useState(false)
+  const ref = useRef()
 
-  function handleClick() {
-    setIsClicked(!isClicked)
+  function handleClick(event?: React.KeyboardEvent) {
+    if (event?.key === 'Enter') {
+      setIsClicked(!isClicked)
+    }
+    if (!event) setIsClicked(!isClicked)
   }
 
-  function handleClickCategory(category: number) {
+  function handleClickCategory(category: number, event?: React.KeyboardEvent) {
+    if (event && event?.key != 'Enter') return
     getActualCategoryInDropdown(categories[category])
     setActualCategory(category)
     handleClick()
   }
 
+  useEffect(() => {
+    document.addEventListener('keydown', function listener(event) {
+      if (event.key === 'Escape' && isClicked) setIsClicked(false)
+      document.removeEventListener('keydown', listener)
+    })
+  })
+
   return (
-    <Container>
+    <Container
+      onClick={() => handleClick()}
+      onKeyDown={handleClick}
+      tabIndex={0}
+      aria-label="Bouton pour ouvrir le menu de filtres des photos"
+    >
       <p>{categories[actualCategory]}</p>
-      <Arrow src={arrow} isClicked={isClicked} onClick={() => handleClick()} />
+      <Arrow src={arrow} isClicked={isClicked} />
       <StyledDropdown isClicked={isClicked}>
-        <Category onClick={() => handleClickCategory(0)}>
+        <Category
+          onClick={() => handleClickCategory(0)}
+          onKeyDown={(event) => handleClickCategory(0, event)}
+          tabIndex={0}
+          aria-label="Filter par popularité"
+        >
           {categories[0]}
         </Category>
         <Line />
-        <Category onClick={() => handleClickCategory(1)}>
+        <Category
+          onClick={() => handleClickCategory(1)}
+          onKeyDown={(event) => handleClickCategory(1, event)}
+          tabIndex={0}
+          aria-label="Filtrer par date"
+        >
           {categories[1]}
         </Category>
         <Line />
-        <Category onClick={() => handleClickCategory(2)}>
+        <Category
+          onClick={() => handleClickCategory(2)}
+          onKeyDown={(event) => handleClickCategory(2, event)}
+          tabIndex={0}
+          aria-label="Filtrer par titre"
+        >
           {categories[2]}
         </Category>
       </StyledDropdown>

@@ -69,7 +69,8 @@ export const Media = ({
 }: MediaProps) => {
   const [newLikes, setNewLikes] = useState(likes)
 
-  function addNewLikes() {
+  function addNewLikes(event?: React.KeyboardEvent) {
+    if (event?.key === 'Tab') return
     setNewLikes(newLikes + 1)
     if (clickAddLike === undefined) return
     clickAddLike()
@@ -83,19 +84,30 @@ export const Media = ({
             <StyledImg
               src={`../src/assets/medias/${photographerId}/${image}`}
               alt={title}
+              tabIndex={0}
               onClick={() => getClickedMediaId(id)}
+              onKeyDown={(event) => getClickedMediaId(id, event)}
+              aria-label="Ouvrir le media dans une lightbox"
             />
           ) : (
             <StyledVideo
               src={`../src/assets/medias/${photographerId}/${video}`}
+              tabIndex={0}
               onClick={() => getClickedMediaId(id)}
+              onKeyDown={(event) => getClickedMediaId(id, event)}
+              aria-label="Ouvrir le media dans une lightbox"
             />
           )}
           <WrapperTitleAndLikes>
             <p>{title}</p>
-            <WrapperLikesAndHeart onClick={() => addNewLikes()}>
+            <WrapperLikesAndHeart
+              tabIndex={0}
+              aria-label="Bouton pour ajouter un like"
+              onClick={() => addNewLikes()}
+              onKeyDown={(event) => addNewLikes(event)}
+            >
               <p>{newLikes}</p>
-              <Heart src={heart} />
+              <Heart src={heart} alt="likes" />
             </WrapperLikesAndHeart>
           </WrapperTitleAndLikes>
         </Container>

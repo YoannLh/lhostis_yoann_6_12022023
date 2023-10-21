@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { colors } from '../../utils/colors'
@@ -24,6 +24,7 @@ const WrapperMediaAndControls = styled.div`
   width: 85%;
   height: 90%;
   margin: auto;
+  z-index: 3;
 
   @media (max-width: 450px) {
     width: 100%;
@@ -41,7 +42,7 @@ const WrapperLeftArrow = styled.div`
 `
 
 const LeftArrow = styled.img`
-  height: 20px;
+  height: 30px;
   margin: auto;
   &: hover {
     cursor: pointer;
@@ -68,7 +69,7 @@ const Video = styled.video`
 const Cross = styled.img`
   position: absolute;
   top: 5px;
-  right: 20px;
+  right: 30px;
   height: 20px;
   &: hover {
     cursor: pointer;
@@ -92,7 +93,7 @@ const WrapperRighttArrow = styled.div`
 `
 
 const RighttArrow = styled.img`
-  height: 20px;
+  height: 30px;
   margin: auto;
   rotate: 180deg;
   &: hover {
@@ -123,8 +124,14 @@ export const ModalMedia = ({
   deleteClickedMediaIdWhenCloseModal,
 }: ModalMediaProps) => {
   const [visible, setVisible] = useState(false)
-  const [actualIndex, setActualIndex] = useState<number>()
+  const [actualIndex, setActualIndex] = useState<number | undefined>()
   const [actualMedia, setActualMedia] = useState<MediaProps>()
+  const ref = useRef<HTMLDivElement>()
+
+  useEffect(() => {
+    if (ref === undefined) return
+    ref.current?.focus()
+  }, [])
 
   useEffect(() => {
     if (clickedMediaId === undefined) return
@@ -137,10 +144,11 @@ export const ModalMedia = ({
         return
       }
     }
-  }, [clickedMediaId, medias])
+  }, [clickedMediaId, medias, visible])
 
   function displayPreviousMedia() {
     if (actualIndex === undefined) return
+    if (actualIndex <= 0) return
     setActualIndex(actualIndex - 1)
     if (medias === undefined) return
     setActualMedia(medias[actualIndex - 1])
@@ -148,6 +156,7 @@ export const ModalMedia = ({
 
   function displayNextMedia() {
     if (actualIndex === undefined) return
+    if (medias && actualIndex >= +medias.length - 1) return
     setActualIndex(actualIndex + 1)
     if (medias === undefined) return
     setActualMedia(medias[actualIndex + 1])
@@ -155,33 +164,47 @@ export const ModalMedia = ({
 
   function closeModal() {
     setVisible(false)
+    setActualIndex(undefined)
+    setActualMedia(undefined)
     deleteClickedMediaIdWhenCloseModal()
     window.scrollTo(0, 0)
   }
 
   useEffect(() => {
-    window.addEventListener('keydown', function listener(e) {
-      if (e.key === 'ArrowLeft') {
+    document.addEventListener('keydown', function listener(e) {
+      if (e.key === 'ArrowLeft' && visible) {
         displayPreviousMedia()
-        window.removeEventListener('keydown', listener)
+        document.removeEventListener('keydown', listener)
       }
-      if (e.key === 'ArrowRight') {
+      if (e.key === 'ArrowRight' && visible) {
         displayNextMedia()
-        window.removeEventListener('keydown', listener)
+        document.removeEventListener('keydown', listener)
+      }
+      if (e.key === 'Escape' && visible) {
+        closeModal()
+        document.removeEventListener('keydown', listener)
       }
     })
   })
 
+  // useEffect(() => {
+  //   console.log('actualIndex : ', actualIndex)
+  // }, [actualIndex])
+
   return (
-    <Container visible={visible}>
-      <WrapperMediaAndControls>
-        <WrapperLeftArrow>
+    <Container visible={visible} tabIndex={0}>
+      <WrapperMediaAndControls tabIndex={0}>
+        <WrapperLeftArrow tabIndex={0}>
           {actualIndex === 0 ? null : (
-            <LeftArrow src={redArrow} onClick={() => displayPreviousMedia()} />
+            <LeftArrow
+              src={redArrow}
+              onClick={() => displayPreviousMedia()}
+              alt="Image précédente"
+            />
           )}
         </WrapperLeftArrow>
         {actualMedia && actualMedia.image ? (
-          <WrapperPhotoVideoAndTitle>
+          <WrapperPhotoVideoAndTitle tabIndex={0}>
             <Photo
               src={`../src/assets/medias/${actualMedia.photographerId}/${actualMedia.image}`}
               alt={actualMedia.title}
@@ -198,10 +221,19 @@ export const ModalMedia = ({
             <Title>{actualMedia?.title}</Title>
           </WrapperPhotoVideoAndTitle>
         ) : null}
-        <Cross src={cross} onClick={() => closeModal()} />
-        <WrapperRighttArrow>
-          {medias && actualIndex === +medias.length - 1 ? null : (
-            <RighttArrow src={redArrow} onClick={() => displayNextMedia()} />
+        <Cross
+          src={cross}
+          onClick={() => closeModal()}
+          onKeyDown={closeModal}
+          tabIndex={0}
+        />
+        <WrapperRighttArrow tabIndex={0}>
+          {medias && actualIndex && actualIndex >= +medias.length - 1 ? null : (
+            <RighttArrow
+              src={redArrow}
+              onClick={() => displayNextMedia()}
+              alt="Image suivante"
+            />
           )}
         </WrapperRighttArrow>
       </WrapperMediaAndControls>

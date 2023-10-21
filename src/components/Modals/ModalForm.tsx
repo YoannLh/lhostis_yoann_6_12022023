@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
@@ -28,6 +28,7 @@ const Container = styled.div`
   padding: 30px;
   background: ${colors.secondaryBackground};
   border-radius: 5px;
+  z-index: 3;
 `
 
 const Title = styled.p`
@@ -107,23 +108,55 @@ export const ModalForm = ({
     formState: { errors },
     handleSubmit,
   } = useForm<ModalFormInputsProps>()
-  const onSubmit: SubmitHandler<ModalFormInputsProps> = (data) =>
+  const onSubmit: SubmitHandler<ModalFormInputsProps> = (data) => {
     console.log(data)
+    setVisible(false)
+  }
+  const ref = useRef<HTMLDivElement>(null)
+
+  function clickOnCross(event?: React.KeyboardEvent) {
+    if (!event) {
+      setVisible(!visible)
+      if (closeContactMe) closeContactMe()
+    }
+    if (event?.key != 'Enter') return
+    if (event?.key === 'Enter') {
+      setVisible(!visible)
+      if (closeContactMe) closeContactMe()
+      return
+    }
+  }
+
+  useEffect(() => {
+    if (visible) ref.current?.focus()
+  }, [visible])
+
   useEffect(() => {
     if (clickedContactMe) setVisible(!visible)
   }, [clickedContactMe])
 
-  function clickOnCross() {
-    setVisible(!visible)
-    if (closeContactMe) closeContactMe()
-  }
+  useEffect(() => {
+    document.addEventListener('keydown', function listener(e) {
+      if (e.key === 'Escape' && visible) {
+        setVisible(!visible)
+        if (closeContactMe) closeContactMe()
+      }
+      document.removeEventListener('keydown', listener)
+    })
+  })
 
   return (
     <Blur visible={visible}>
-      <Container>
+      <Container tabIndex={0} ref={ref}>
         <Title>Contactez-moi</Title>
         <Name>{name}</Name>
-        <Cross src={whiteCross} onClick={() => clickOnCross()} />
+        <Cross
+          src={whiteCross}
+          onClick={() => clickOnCross()}
+          onKeyDown={(event) => clickOnCross(event)}
+          aria-label="Ferme le formulaire de contact"
+          tabIndex={0}
+        />
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Label>
             Prénom

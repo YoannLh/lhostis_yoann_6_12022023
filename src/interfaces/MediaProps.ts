@@ -7,6 +7,6 @@ export default interface MediaProps {
   likes: number
   date: string
   price: number
-  getClickedMediaId?: (id: number) => void
+  getClickedMediaId?: (id: number, event?: React.KeyboardEvent) => void
   clickAddLike?: () => void
 }

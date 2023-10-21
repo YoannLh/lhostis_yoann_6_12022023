@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
 
@@ -194,8 +194,12 @@ export const Photographer = () => {
     }
   }
 
-  function getClickedMediaId(clickedMediaId: number) {
-    setClickedMediaId(clickedMediaId)
+  function getClickedMediaId(
+    clickedMediaId: number,
+    event?: React.KeyboardEvent
+  ) {
+    if (event?.key === 'Tab') return
+    if (clickedMediaId) setClickedMediaId(clickedMediaId)
   }
 
   function deleteClickedMediaIdWhenCloseModal() {
@@ -222,10 +226,11 @@ export const Photographer = () => {
             <Button
               isClicked={() => clickContactMe()}
               buttonText="Contactez-moi"
+              aria-label="Bouton pour ouvrir le formulaire de contact"
             />
             <Photo
               src={`../src/assets/photographers/${infos.portrait}`}
-              alt="sfdfsdd"
+              alt={infos.name}
             />
           </HeaderPhotographer>
         ) : null}
