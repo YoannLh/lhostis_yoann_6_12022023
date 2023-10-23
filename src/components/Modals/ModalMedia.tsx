@@ -124,7 +124,7 @@ export const ModalMedia = ({
   deleteClickedMediaIdWhenCloseModal,
 }: ModalMediaProps) => {
   const [visible, setVisible] = useState(false)
-  const [actualIndex, setActualIndex] = useState<number | undefined>()
+  const [actualIndex, setActualIndex] = useState<number>()
   const [actualMedia, setActualMedia] = useState<MediaProps>()
   const ref = useRef<HTMLDivElement>()
 
@@ -144,11 +144,10 @@ export const ModalMedia = ({
         return
       }
     }
-  }, [clickedMediaId, medias, visible])
+  }, [clickedMediaId])
 
   function displayPreviousMedia() {
     if (actualIndex === undefined) return
-    if (actualIndex <= 0) return
     setActualIndex(actualIndex - 1)
     if (medias === undefined) return
     setActualMedia(medias[actualIndex - 1])
@@ -156,7 +155,6 @@ export const ModalMedia = ({
 
   function displayNextMedia() {
     if (actualIndex === undefined) return
-    if (medias && actualIndex >= +medias.length - 1) return
     setActualIndex(actualIndex + 1)
     if (medias === undefined) return
     setActualMedia(medias[actualIndex + 1])
@@ -164,33 +162,28 @@ export const ModalMedia = ({
 
   function closeModal() {
     setVisible(false)
-    setActualIndex(undefined)
-    setActualMedia(undefined)
     deleteClickedMediaIdWhenCloseModal()
     window.scrollTo(0, 0)
   }
 
   useEffect(() => {
     document.addEventListener('keydown', function listener(e) {
-      if (e.key === 'ArrowLeft' && visible) {
+      if (e.key === 'ArrowLeft') {
+        if (actualIndex === 0) return
         displayPreviousMedia()
         document.removeEventListener('keydown', listener)
       }
-      if (e.key === 'ArrowRight' && visible) {
+      if (e.key === 'ArrowRight') {
+        if (medias && actualIndex === medias.length - 1) return
         displayNextMedia()
         document.removeEventListener('keydown', listener)
       }
-      if (e.key === 'Escape' && visible) {
+      if (e.key === 'Escape') {
         closeModal()
         document.removeEventListener('keydown', listener)
       }
     })
   })
-
-  // useEffect(() => {
-  //   console.log('actualIndex : ', actualIndex)
-  // }, [actualIndex])
-
   return (
     <Container visible={visible} tabIndex={0}>
       <WrapperMediaAndControls tabIndex={0}>
@@ -216,7 +209,9 @@ export const ModalMedia = ({
           <WrapperPhotoVideoAndTitle>
             <Video
               src={`../src/assets/medias/${actualMedia.photographerId}/${actualMedia.video}`}
+              aria-labelledby={actualMedia.video}
               controls
+              tabIndex={0}
             />
             <Title>{actualMedia?.title}</Title>
           </WrapperPhotoVideoAndTitle>
@@ -226,9 +221,12 @@ export const ModalMedia = ({
           onClick={() => closeModal()}
           onKeyDown={closeModal}
           tabIndex={0}
+          alt="croix fermeture"
         />
         <WrapperRighttArrow tabIndex={0}>
-          {medias && actualIndex && actualIndex >= +medias.length - 1 ? null : (
+          {medias &&
+          actualIndex &&
+          actualIndex === +medias.length - 1 ? null : (
             <RighttArrow
               src={redArrow}
               onClick={() => displayNextMedia()}

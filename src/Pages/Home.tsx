@@ -63,7 +63,7 @@ const Price = styled.p`
   text-align: center;
   font-size: 0.8em;
   margin: 0 0 40px 0;
-  color: ${colors.tertiaryText};
+  color: ${colors.black};
 `
 
 export const Home = () => {

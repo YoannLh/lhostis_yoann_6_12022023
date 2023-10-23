@@ -198,7 +198,8 @@ export const Photographer = () => {
     clickedMediaId: number,
     event?: React.KeyboardEvent
   ) {
-    if (event?.key === 'Tab') return
+    if (!event && clickedMediaId) setClickedMediaId(clickedMediaId)
+    if (event?.key === 'Tab' || event?.key != 'Enter') return
     if (clickedMediaId) setClickedMediaId(clickedMediaId)
   }
 
@@ -266,7 +267,7 @@ export const Photographer = () => {
         />
         <WrapperTotalLikesAndPrice>
           <TotalLikes>
-            {totalLikes} <Heart src={blackHeart} />
+            {totalLikes} <Heart src={blackHeart} alt="black hearth" />
           </TotalLikes>
           <Price>{infos?.price} € / jour</Price>
         </WrapperTotalLikesAndPrice>

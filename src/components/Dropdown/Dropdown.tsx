@@ -77,8 +77,10 @@ export const Dropdown = ({ getActualCategoryInDropdown }: DropdownProps) => {
 
   useEffect(() => {
     document.addEventListener('keydown', function listener(event) {
-      if (event.key === 'Escape' && isClicked) setIsClicked(false)
-      document.removeEventListener('keydown', listener)
+      if (event.key === 'Escape' && isClicked) {
+        setIsClicked(!isClicked)
+        document.removeEventListener('keydown', listener)
+      }
     })
   })
 
@@ -90,7 +92,7 @@ export const Dropdown = ({ getActualCategoryInDropdown }: DropdownProps) => {
       aria-label="Bouton pour ouvrir le menu de filtres des photos"
     >
       <p>{categories[actualCategory]}</p>
-      <Arrow src={arrow} isClicked={isClicked} />
+      <Arrow src={arrow} isClicked={isClicked} alt="white arrow" />
       <StyledDropdown isClicked={isClicked}>
         <Category
           onClick={() => handleClickCategory(0)}

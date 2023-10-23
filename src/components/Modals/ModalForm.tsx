@@ -140,8 +140,8 @@ export const ModalForm = ({
       if (e.key === 'Escape' && visible) {
         setVisible(!visible)
         if (closeContactMe) closeContactMe()
+        document.removeEventListener('keydown', listener)
       }
-      document.removeEventListener('keydown', listener)
     })
   })
 
@@ -156,6 +156,7 @@ export const ModalForm = ({
           onKeyDown={(event) => clickOnCross(event)}
           aria-label="Ferme le formulaire de contact"
           tabIndex={0}
+          alt="croix fermeture"
         />
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Label>
